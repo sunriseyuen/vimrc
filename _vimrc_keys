@@ -1,0 +1,70 @@
+if 1
+    if !exists('g:option_leader')
+        let mapleader = ','
+    else
+        let mapleader=g:option_leader
+    endif
+    if !exists('g:option_localleader')
+        let maplocalleader = '_'
+    else
+        let maplocalleader=g:option_localleader
+    endif
+
+    :cmap <C-k> <Up>   "命令行按键影射
+    :cmap <C-j> <Down>
+
+    nnoremap <expr> j v:count ? 'j' : 'gj'
+    nnoremap <expr> k v:count ? 'k' : 'gk'   
+
+    "普通模式下按空格进入命令模式
+    nnoremap <SPACE> :
+
+    " 顺序或倒序遍历quickfix中列出的item
+    nnoremap <F8> :cw <cr>
+    nnoremap <F9> :cp <cr>
+    nmap <F2> :TagbarToggle<CR>
+    inoremap <F9> <c-o> :cp <cr>
+    nnoremap <F10> :cn<cr>
+    inoremap <F10> <c-o> :cn <cr>
+
+    "navi tab
+    nnoremap <leader>t :tabe<CR>
+
+    inoremap <C-l> <Right>
+    noremap <C-l> <C-w>l
+    noremap <C-h> <C-w>h
+    noremap <C-j> <C-w>j
+    noremap <C-k> <C-w>k
+
+    "取消方向键,强逼使用hjkl
+    nnoremap <up> <nop>
+    nnoremap <down> <nop>
+    nnoremap <left> <nop>
+    nnoremap <right> <nop>
+    inoremap <up> <nop>
+    inoremap <down> <nop>
+    inoremap <left> <nop>
+    inoremap <right> <nop>
+
+    if exists('g:option_has_builder') 
+        map <F5> :call AutoBuilder()<CR>
+    endif
+
+    " 使用 <Tab> 和 <S-Tab> 来进行缩进
+    inoremap <S-Tab> <C-O><LT><LT>
+    nnoremap <Tab> >>
+    nnoremap <S-Tab> <LT><LT>
+    vnoremap <Tab> >
+    vnoremap <S-Tab> <LT>
+
+    " Move visual block
+    vnoremap J :m '>+1<CR>gv=gv
+    vnoremap K :m '<-2<CR>gv=gv
+
+    "quick replace the cursor over the word 
+    nnoremap <leader>,r :%s/\<<C-r>=expand('<cword>')<CR>\>/
+
+    " Keep search matches in the middle of the window.
+    nnoremap n nzzzv
+    nnoremap N Nzzzv
+endif

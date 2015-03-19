@@ -1,0 +1,168 @@
+" Environment
+" {
+if 1
+
+
+    " Helper Functions 
+    "{
+        silent function! TrySource(fn)
+            if filereadable(expand(a:fn))
+                :exec ":source ".a:fn
+                return 1
+            else
+                return 0
+            endif
+        endfunction
+    "}
+
+    " Identify platform {
+        silent function! OSX()
+            return has('macunix')
+        endfunction
+
+        silent function! LINUX()
+            return has('unix') && !has('macunix') && !has('win32unix')
+        endfunction
+
+        silent function! WINDOWS()
+            return  (has('win16') || has('win32') || has('win64'))
+        endfunction
+    " }
+    function! FileSize()
+        let bytes = getfsize(expand("%:p"))
+        if bytes <= 0
+            return ""
+        endif
+
+        if bytes < 1024
+            return bytes
+        else
+            return (bytes/1024) . "K"
+        endif
+    endfunctio
+
+    " Basics {
+        if !WINDOWS()
+            set shell=/bin/sh
+        endif
+    " }
+
+    " Helper Functions {
+
+    "if use this function, airline don't refresh branch
+    command! -nargs=1 Dit call GitCmd(<f-args>)
+    function! GitCmd(git_cmd)
+        if has('win32') || has('win64')
+            exe "cd " . Search_root()
+            echo iconv(system('git ' . a:git_cmd), "utf-8", &enc)
+        endif
+    endfunction
+
+    if !exists('g:root_marker')
+        let g:root_marker = [".git"]
+    endif
+    function! Search_root()
+        let l:root = fnamemodify(".", ":p:h")
+
+        if !empty(g:root_marker)
+            let root_found = 0
+            let l:cur_dir = fnamemodify(l:root, ":p:h")
+            let l:prev_dir = ""
+            while l:cur_dir != l:prev_dir
+                for tags_dir in g:root_marker
+                    let l:tag_path = l:cur_dir . "/" . tags_dir
+                    if filereadable(l:tag_path) || isdirectory(l:tag_path)
+                        let root_found = 1 | break
+                    endif
+                endfor
+
+                if root_found
+                    let l:root = l:cur_dir | break
+                endif
+
+                let l:prev_dir = l:cur_dir
+                let l:cur_dir = fnamemodify(l:cur_dir, ":p:h:h")
+            endwhile
+
+            return root_found ? l:root : fnamemodify(".", ":p:h")
+        endif
+
+        return l:root
+    endfunction
+
+        " 删除行尾空白
+        function! StripTrailingWhitespace()
+                " Preparation: save last search, and cursor position.
+                let _s=@/
+                let l = line(".")
+                let c = col(".")
+                " do the business:
+                %s/\s\+$//e
+                " clean up: restore previous search history, and cursor position
+                let @/=_s
+                call cursor(l, c)
+        endfunction
+
+        " 检测是否有该插件
+        func! IsBundled(name)
+            if !exists('g:bundles')
+                return 0
+            endif
+            for l:bundle in g:bundles
+                if l:bundle['name'] == a:name
+                    return 1
+                endif
+            endfor
+            return 0
+        endfunc
+    " }
+
+
+    " Windows Compatible {
+      " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+      " across (heterogeneous) systems easier.
+      "  if WINDOWS()
+      "    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+      "    let $TMP = expand('~/.vim/tmp')
+      "    let $TEMP = expand('~/.vim/tmp')
+      "  endif
+    " }
+
+    "{ AutoBuilder
+    let g:option_has_builder = 1
+    function AutoBuilder()
+
+        if globpath('.', 'pall.bat') !=''
+            set makeprg=pall.bat
+            set errorformat=\ %#%f(%l\\\,%c):\ %m
+            cw
+            make
+        elseif  globpath('..', 'td.exe') !="" && expand("%:e") == "cs"
+            set makeprg=..\\td.exe\ -u\ %
+            set errorformat=\ %#[csc]%f(%l\\\,%c):\ %m
+            cw
+            make
+        elseif  globpath('..', 'CG.exe') !="" && expand("%:e") == "cs"
+            set makeprg=..\\CG.exe\ -c\ b\ -u\ %
+            set errorformat=\ %#[csc]%f(%l\\\,%c):\ %m
+            cw
+            make
+        elseif  globpath('.', '*.build') !=""
+            set makeprg=nant.exe
+            set errorformat=\ %#[csc]%f(%l\\\,%c):\ %m
+            cw
+            make
+        elseif  globpath('..', '*.build') !=""
+            cd ..
+            set makeprg=nant.exe
+            set errorformat=\ %#[csc]%f(%l\\\,%c):\ %m
+            cw
+            make
+        endif
+
+    endfunction
+
+    "}
+
+endif 
+" }

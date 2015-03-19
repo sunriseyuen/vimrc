@@ -1,0 +1,24 @@
+    "  help
+    " :PluginList          - list configured plugins
+    " :PluginInstall(!)    - install (update) plugins
+    " :PluginSearch(!) foo - search (or refresh cache first) for foo
+    " :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
+    
+    Plugin 'gmarik/vundle'
+    Plugin 'terryma/vim-expand-region'
+    Plugin 'Raimondi/delimitMate'
+    Plugin 'ctrlp.vim'
+    Plugin 'cmd.vim'
+    Plugin 'Tagbar'
+    Plugin 'kshenoy/vim-signature'
+    Plugin 'surround.vim'
+    Plugin 'repeat.vim'
+    Plugin 'The-NERD-Commenter'
+    Plugin 'Tabular'
+    Plugin 'Better-Javascript-Indentation'
+    Plugin 'cmdline-completion'
+    Plugin 'scrooloose/syntastic'
+    Plugin 'Shougo/neocomplete.vim'
+    Plugin 'Shougo/neosnippet'
+    Plugin 'Shougo/vimproc.vim'
+    Plugin 'idanarye/vim-vebugger'

@@ -1,0 +1,215 @@
+" Setup vundle
+" vundle
+if isdirectory(expand($VIM.'/vimfiles/bundle/vundle'))
+    " 确保这里的只被加载一次
+    if ! IsBundled('vundle')
+        filetype off
+
+        "此处规定插件的安装路径
+        if LINUX()
+            set rtp+=~/.vim/bundle/vundle/
+            call vundle#rc()
+        else
+            set rtp+=$VIM/vimfiles/bundle/vundle/
+            call vundle#rc('$VIM/vimfiles/bundle/')
+        endif
+
+
+        " Use bundles config
+        call TrySource($VIM."/_vimrc_bundles")
+        filetype plugin indent on
+    endif
+else
+    " echo 'Seems you vundle is not ready!'
+endif
+
+if IsBundled('ctrlp.vim')
+    let g:ctrlp_clear_cache_on_exit = 0
+    let g:ctrlp_max_depth           = 40
+    let g:ctrlp_max_files           = 0
+    let g:ctrlp_working_path_mode   = 'ra'
+    let g:ctrlp_lazy_update         = 1
+    let g:ctrlp_max_height          = 40
+    map <leader>b :CtrlPBuffer<CR>
+    map <leader>r :CtrlPMRU<CR>
+    map <leader>l :CtrlP<CR>
+    map <leader>c :CtrlP .<CR>
+    map <leader>p :CtrlP ..<CR>
+
+    let g:ctrlp_custom_ignore = {
+                \ 'dir':  '\v[\/]\.(git|hg|svn)|FastReport|jada|Tools|doc|dist|obj|openerp|utvpn-src-win32|temp$',
+                \ 'file': '\v\.(exe|so|dll|zip|7z|rar|doc|pdb|NTX|dbf|obj|resx|jpg|asp|mobi|lsp|lst|sql|dbx|dbi|mp3|lsv|bmp|cab|dbt|ico|rpt||png|pdf|epub|gif|xls|xlsx|log)$',
+                \ 'link': 'some_bad_symbolic_links',
+                \ }
+
+endif
+
+if IsBundled('nosami/Omnisharp')
+    "Bundle 'nosami/Omnisharp'
+    "
+    let g:OmniSharp_host = "http://localhost:2000"
+    let g:OmniSharp_timeout = 1
+    "
+    autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+    "nnoremap <leader>fm :OmniSharpFindMembersInBuffer<cr>
+    "set completeopt-=preview
+    "set updatetime=500
+    "if !exists('g:neocomplete#sources')
+    "   let g:neocomplete#sources = {}
+    "endif
+    "
+    "if !exists('g:neocomplete#sources#omni#input_patterns')
+    "  let g:neocomplete#sources#omni#input_patterns = {}
+    "endif
+    "
+    "let g:neocomplete#sources#omni#input_patterns.cs = '.*[^=\);]'
+    "let g:neocomplete#sources.cs = ['omni']
+    "let g:neocomplete#enable_refresh_always = 0
+    "let g:echodoc_enable_at_startup = 1
+    "let g:neocomplete#enable_insert_char_pre = 3
+
+endif
+
+if IsBundled('vim-easymotion')
+    let g:EasyMotion_startofline = 0
+    let g:EasyMotion_smartcase   = 1
+endif
+
+if IsBundled('rainbow_parentheses.vim')
+    let g:rbpt_colorpairs = [
+                \ ['Darkblue',    'SeaGreen3'],
+                \ ['darkgray',    'DarkOrchid3'],
+                \ ['darkgreen',   'firebrick3'],
+                \ ['darkcyan',    'RoyalBlue3'],
+                \ ['darkred',     'SeaGreen3'],
+                \ ['darkmagenta', 'DarkOrchid3'],
+                \ ['brown',       'firebrick3'],
+                \ ['gray',        'RoyalBlue3'],
+                \ ['black',       'SeaGreen3'],
+                \ ['darkmagenta', 'DarkOrchid3'],
+                \ ['Darkblue',    'firebrick3'],
+                \ ['darkgreen',   'RoyalBlue3'],
+                \ ['darkcyan',    'SeaGreen3'],
+                \ ['darkred',     'DarkOrchid3'],
+                \ ['red',         'firebrick3'],
+                \ ]
+
+    let g:rbpt_max = 16
+    let g:rbpt_loadcmd_toggle = 0
+    "        au VimEnter * RainbowParenthesesToggle
+    "        au Syntax   * RainbowParenthesesLoadRound
+    "au Syntax   * RainbowParenthesesLoadSquare
+    "au Syntax   * RainbowParenthesesLoadBraces
+
+endif
+
+if IsBundled('vim-gocode')
+
+    autocmd FileType go compiler go
+    autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
+endif
+
+if IsBundled('Tabular')
+
+    nmap <Leader>a{ :Tabularize /{<CR>:Tabularize /}<CR>:Tabularize /{<CR>:Tabularize /}<CR>
+    nmap <Leader>a= :Tabularize /=<CR>
+    nmap <Leader>a: :Tabularize /:<CR>
+    nmap <Leader>a, :Tabularize /,<CR>
+
+endif
+
+if IsBundled('YankRing.vim')
+    let g:yankring_max_element_length = 20480
+    let g:yankring_max_history = 20
+endif
+
+if IsBundled('neocomplete.vim')
+    " Define dictionary.
+    let g:neocomplete#sources#dictionary#dictionaries = {
+                \ 'default'    : $VIM.'/vimfiles/dict/word2000.dict',
+                \ 'php'        : $VIM.'/vimfiles/dict/php.dict',
+                \ 'javascript' : $VIM.'/vimfiles/dict/javascript.dict',
+                \ 'txt'        : $VIM.'/vimfiles/dict/txt.dict',
+                \ 'py'         : $VIM.'/vimfiles/bundle/Pydiction/complete-dict',
+                \ 'cs'         : $VIM.'/vimfiles/dict/net.dict'
+                \ }
+
+    "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+    " Disable AutoComplPop.
+    let g:acp_enableAtStartup = 0
+    " Use neocomplete.
+    let g:neocomplete#enable_at_startup = 1
+    " Use smartcase.
+    let g:neocomplete#enable_smart_case = 1
+    " Set minimum syntax keyword length.
+    "let g:neocomplete#sources#syntax#min_keyword_length = 3
+    let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+    " Define keyword.
+    if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+    endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+    " Plugin key-mappings.
+    inoremap <expr><C-g>     neocomplete#undo_completion()
+    inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+    " Recommended key-mappings.
+    " <CR>: close popup and save indent.
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+        return neocomplete#smart_close_popup() . "\<CR>"
+        " For no inserting <CR> key.
+        "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    endfunction
+
+    " <TAB>: completion.
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><C-y>  neocomplete#close_popup()
+    inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+    " Close popup by <Space>.
+    imap <expr><Space> neosnippet#expandable() ?  "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ?  neocomplete#close_popup()."\<Space>" : "\<Space>"
+
+    " Plugin key-mappings.
+    imap <C-k>  <Plug>(neosnippet_expand_or_jump)
+    smap <C-k>  <Plug>(neosnippet_expand_or_jump)
+    xmap <C-k>  <Plug>(neosnippet_expand_target)
+
+    " SuperTab like snippets behavior.
+    imap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+    smap <expr><TAB> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+    if has('conceal')
+        set conceallevel=2 concealcursor=i
+    endif
+
+    let g:neosnippet#snippets_directory=$VIM.'/vimfiles/snippets'
+
+    " Or set this.
+    "let g:neocomplete#enable_cursor_hold_i = 1
+    " Or set this.
+    "let g:neocomplete#enable_insert_char_pre = 1
+
+    " AutoComplPop like behavior.
+    let g:neocomplete#enable_ignore_case=1
+    let g:neocomplete#enable_auto_delimiter  = 1
+
+    " Enable omni completion.
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+    " Enable heavy omni completion.
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+
+endif

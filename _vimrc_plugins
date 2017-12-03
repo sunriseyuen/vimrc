@@ -19,6 +19,19 @@ if isdirectory(expand($VIM.'/vimfiles/bundle/vundle'))
         call TrySource($VIM."/_vimrc_bundles")
         filetype plugin indent on
     endif
+elseif isdirectory(expand('~/.config/nvim/bundle/vundle'))
+    " 确保这里的只被加载一次
+    if ! IsBundled('vundle')
+        filetype off
+
+        "此处规定插件的安装路径
+        set rtp+=~/.config/nvim/bundle/vundle/
+        call vundle#rc()
+
+        " Use bundles config
+        call TrySource("_vimrc_bundles")
+        filetype plugin indent on
+    endif
 else
     " echo 'Seems you vundle is not ready!'
 endif

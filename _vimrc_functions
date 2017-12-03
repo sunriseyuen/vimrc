@@ -120,17 +120,6 @@ if 1
         endfunc
     " }
 
-
-    " Windows Compatible {
-      " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-      " across (heterogeneous) systems easier.
-      "  if WINDOWS()
-      "    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-      "    let $TMP = expand('~/.vim/tmp')
-      "    let $TEMP = expand('~/.vim/tmp')
-      "  endif
-    " }
-
     "{ AutoBuilder
     let g:option_has_builder = 1
     function AutoBuilder()

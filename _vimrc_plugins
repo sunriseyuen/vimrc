@@ -36,7 +36,9 @@ else
     " echo 'Seems you vundle is not ready!'
 endif
 
-if IsBundled('ctrlp.vim')
+	echo "ctrlp---p_"
+"if IsBundled('ctrlp.vim')
+	echo "ctrlp---p"
     let g:ctrlp_clear_cache_on_exit = 0
     let g:ctrlp_max_depth           = 40
     let g:ctrlp_max_files           = 0
@@ -55,7 +57,7 @@ if IsBundled('ctrlp.vim')
                 \ 'link': 'some_bad_symbolic_links',
                 \ }
 
-endif
+"endif
 
 if IsBundled('nosami/Omnisharp')
     "Bundle 'nosami/Omnisharp'

@@ -111,12 +111,12 @@ let g:w3m#search_engine = 'http://www.baidu.com'
 let g:w3m#external_browser = 'chrome'
 
 " Load Appearance
-call TrySource($VIM."/_vimrc_appearance")
+call TrySource("_vimrc_appearance")
 
 " Load keymaping
 " 需要先设置 keymaping,这个会影响插件按键的绑定
-call TrySource($VIM."/_vimrc_keys")
+call TrySource("_vimrc_keys")
 
 " Load plugins
-call TrySource($VIM."/_vimrc_plugins")
+call TrySource("_vimrc_plugins")
 "

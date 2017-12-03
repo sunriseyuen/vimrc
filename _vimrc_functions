@@ -6,8 +6,11 @@ if 1
     " Helper Functions 
     "{
         silent function! TrySource(fn)
-            if filereadable(expand(a:fn))
-                :exec ":source ".a:fn
+              if filereadable(expand($VIM.a:fn))
+                :exec ":source ".$VIM.a:fn
+                return 1
+            elseif filereadable(expand("~/.config/nvim/".a:fn))
+                :exec ":source ~/.config/nvim/".a:fn
                 return 1
             else
                 return 0
